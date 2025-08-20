@@ -20,7 +20,6 @@ export default function PostList({
     ? urlForImage(post.author.image)
     : null;
 
-  console.log(post);
   return (
     <>
       <div
