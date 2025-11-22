@@ -47,40 +47,12 @@ export default function Contact({ settings }) {
         Contact
       </h1>
       <div className="text-center">
-        <p className="text-lg">We are a here to help.</p>
+        <p className="mx-auto max-w-sm text-center text-lg">
+          Have something to say? We are here to help.
+        </p>
       </div>
 
-      <div className="my-10 grid md:grid-cols-2">
-        <div className="my-10">
-          <h2 className="text-2xl font-semibold dark:text-white">
-            Contact Stablo
-          </h2>
-          <p className="mt-5 max-w-sm">
-            Have something to say? We are here to help. Fill up the
-            form or send email or call phone.
-          </p>
-
-          <div className="mt-5">
-            <div className="text-dark-600 mt-2 flex items-center space-x-2 dark:text-gray-400">
-              <MapPinIcon className="h-4 w-4" />
-              <span>1734 Sanfransico, CA 93063</span>
-            </div>
-            {settings?.email && (
-              <div className="text-dark-600 mt-2 flex items-center space-x-2 dark:text-gray-400">
-                <EnvelopeIcon className="h-4 w-4" />
-                <a href={`mailto:${settings.email}`}>
-                  {settings.email}
-                </a>
-              </div>
-            )}
-            {settings?.phone && (
-              <div className="text-dark-600 mt-2 flex items-center space-x-2 dark:text-gray-400">
-                <PhoneIcon className="h-4 w-4" />
-                <a href={`tel:${settings.phone}`}>{settings.phone}</a>
-              </div>
-            )}
-          </div>
-        </div>
+      <div className="mx-auto my-10 max-w-lg">
         <div>
           <form onSubmit={handleSubmit(onSubmit)} className="my-10">
             <div className="mb-5">

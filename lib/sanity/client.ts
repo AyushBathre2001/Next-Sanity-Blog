@@ -27,7 +27,7 @@ if (!projectId) {
 /**
  * Checks if it's safe to create a client instance, as `@sanity/client` will throw an error if `projectId` is false
  */
-const client = projectId
+export const client = projectId
   ? createClient({
       projectId,
       dataset,
@@ -157,6 +157,20 @@ export async function submitContactForm(data: any) {
         email: data?.email,
         message: data?.message,
         submittedAt: new Date().toLocaleDateString()
+      })) || []
+    );
+  }
+  return [];
+}
+
+export async function subscribedUser(data: any) {
+  if (client) {
+    return (
+      (await client.create({
+        _type: "subscribed",
+        full_name: data?.full_name,
+        email: data?.email,
+        date: new Date().toLocaleDateString()
       })) || []
     );
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition, Disclosure } from "@headlessui/react";
 import Container from "@/components/container";
 import Link from "next/link";
@@ -9,23 +9,25 @@ import { urlForImage } from "@/lib/sanity/image";
 import cx from "clsx";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import NavSearch from "./NavSearch";
+import { getNavLogo } from "@/services/nav/api";
 
-export default function Navbar(props) {
-  const leftmenu = [
-    {
-      label: "Home",
-      href: "/"
-    },
-    {
-      label: "About",
-      href: "/about"
-    },
-    {
-      label: "Contact",
-      href: "/contact"
-    }
-  ];
+const leftmenu = [
+  {
+    label: "Home",
+    href: "/"
+  },
+  {
+    label: "About",
+    href: "/about"
+  },
+  {
+    label: "Contact",
+    href: "/contact"
+  }
+];
 
+export default function Navbar({ logo }) {
+  const logoSrc = logo ?? "/img/logo.svg";
   const mobilemenu = [...leftmenu];
 
   return (
@@ -36,30 +38,17 @@ export default function Navbar(props) {
             <>
               <div className="flex flex-wrap justify-between md:flex-nowrap md:gap-10">
                 <div className="flex w-full items-center justify-between md:w-auto">
-                  <Link href="/" className="w-28 dark:hidden">
+                  <Link href="/" className="w-28">
                     <Image
-                      src={"/img/logo.svg"}
+                      src={logoSrc}
                       alt="Logo"
                       width={200}
                       height={50}
                       priority={true}
-                      sizes="(max-width: 640px) 100vw, 200px"
+                      className="h-[50px] w-auto object-contain"
                     />
                   </Link>
-                  <Link href="/" className="hidden w-28 dark:block">
-                    {props.logoalt ? (
-                      <Image
-                        {...urlForImage(props.logoalt)}
-                        alt="Logo"
-                        priority={true}
-                        sizes="(max-width: 640px) 100vw, 200px"
-                      />
-                    ) : (
-                      <span className="block text-center">
-                        Stablo
-                      </span>
-                    )}
-                  </Link>
+
                   <Disclosure.Button
                     aria-label="Toggle Menu"
                     className="ml-auto rounded-md px-2 py-1 text-gray-500 focus:text-blue-500 focus:outline-none dark:text-gray-300 md:hidden ">
@@ -83,7 +72,7 @@ export default function Navbar(props) {
                     </svg>
                   </Disclosure.Button>
                 </div>
-                <NavSearch/>
+                <NavSearch />
                 <div className="order-1 hidden w-full flex-col items-center justify-start md:order-none md:flex md:w-auto md:flex-1 md:flex-row md:justify-end">
                   {leftmenu.map((item, index) => (
                     <Fragment key={`${item.label}${index}`}>
@@ -97,7 +86,7 @@ export default function Navbar(props) {
                         <Link
                           href={item.href}
                           key={`${item.label}${index}`}
-                          className="px-6 py-2 text-sm font-medium text-gray-600 hover:underline hover:text-black dark:text-gray-400"
+                          className="px-6 py-2 text-sm font-medium text-gray-600 hover:text-black hover:underline dark:text-gray-400"
                           target={item.external ? "_blank" : ""}
                           rel={item.external ? "noopener" : ""}>
                           {item.label}

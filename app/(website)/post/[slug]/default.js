@@ -8,6 +8,10 @@ import { parseISO, format } from "date-fns";
 
 import CategoryLabel from "@/components/blog/category";
 import AuthorCard from "@/components/blog/authorCard";
+import TableOfContents from "@/components/blog/tableOfContents";
+import Faqs from "@/components/blog/Faqs";
+import RelatedArticles from "@/components/blog/RelatedArticles";
+import NewsletterForm from "@/components/blog/NewsletterForm";
 
 export default function Post(props) {
   const { loading, post } = props;
@@ -19,19 +23,53 @@ export default function Post(props) {
   }
 
   const imageProps = post?.image ? urlForImage(post?.image) : null;
-
   const AuthorimageProps = post?.author?.image
     ? urlForImage(post.author.image)
     : null;
 
+  // Extract headings from the body content
+  const extractHeadings = body => {
+    if (!body) return [];
+
+    const headings = [];
+
+    const traverseBlocks = blocks => {
+      blocks.forEach(block => {
+        if (
+          block._type === "block" &&
+          block.style === "h2" &&
+          block.children
+        ) {
+          const text = block.children
+            .map(child => child.text)
+            .join("");
+          const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+          headings.push({ id, text });
+        }
+
+        // Handle nested blocks in portable text
+        if (block.children) {
+          traverseBlocks(block.children);
+        }
+        if (block.items) {
+          traverseBlocks(block.items);
+        }
+      });
+    };
+
+    traverseBlocks(body);
+    return headings;
+  };
+
+  const headings = extractHeadings(post?.body);
+
   return (
     <>
-      <Container className="!pt-0">
-        <div className="mx-auto max-w-screen-md ">
+      <Container className="max-w-screen-xl !pt-0">
+        <div className="mx-auto max-w-screen-md">
           <div className="flex justify-center">
             <CategoryLabel categories={post.categories} />
           </div>
-
           <h1 className="text-brand-primary mb-3 mt-2 text-center text-3xl font-semibold tracking-tight dark:text-white lg:text-4xl lg:leading-snug">
             {post.title}
           </h1>
@@ -70,7 +108,7 @@ export default function Post(props) {
         </div>
       </Container>
 
-      <div className="relative z-0 mx-auto aspect-video max-w-screen-lg overflow-hidden lg:rounded-lg">
+      <div className="relative z-0 mx-auto aspect-video max-w-screen-xl overflow-hidden lg:rounded-lg">
         {imageProps && (
           <Image
             src={imageProps.src}
@@ -83,23 +121,144 @@ export default function Post(props) {
         )}
       </div>
 
-      <Container>
-        <article className="mx-auto max-w-screen-md ">
-          <div className="prose mx-auto my-3 dark:prose-invert prose-a:text-blue-600">
-            {post.body && <PortableText value={post.body} />}
+      <Container className="max-w-screen-xl">
+        <div className="mx-auto max-w-screen-2xl">
+          <div className="flex w-full gap-8">
+            {/* Table of Contents - Left Sidebar */}
+            {headings.length > 0 && (
+              <aside className="hidden w-60 flex-shrink-0 lg:block">
+                <TableOfContents headings={headings} />
+              </aside>
+            )}
+
+            {/* Article Content */}
+            <article
+              className={`${headings.length > 0 ? "lg:flex-1" : "mx-auto max-w-screen-md"}`}>
+              <div className="prose mx-auto my-3 dark:prose-invert prose-a:text-blue-600">
+                {post.body && (
+                  <PortableTextWithIds value={post.body} />
+                )}
+              </div>
+              {post?.faqs && <Faqs faqs={post?.faqs} />}
+
+              {post.author && <AuthorCard author={post.author} />}
+            </article>
+
+            <aside className="hidden w-[350px] flex-shrink-0 lg:block">
+              <NewsletterForm />
+            </aside>
           </div>
-          <div className="mb-7 mt-7 flex justify-center">
-            <Link
-              href="/"
-              className="bg-brand-secondary/20 rounded-full px-5 py-2 text-sm text-blue-600 dark:text-blue-500 ">
-              ← View all posts
-            </Link>
-          </div>
-          {post.author && <AuthorCard author={post.author} />}
-        </article>
+        </div>
+        <div className="w-full md:py-14 py-10">
+          <RelatedArticles posts={post?.relatedArticles} />
+        </div>
       </Container>
     </>
   );
+}
+
+// Custom PortableText component that adds IDs to headings
+function PortableTextWithIds({ value }) {
+  const components = {
+    block: {
+      h2: ({ children }) => {
+        const text = Array.isArray(children)
+          ? children
+              .map(child => (typeof child === "string" ? child : ""))
+              .join("")
+          : String(children);
+        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        return <h2 id={id}>{children}</h2>;
+      }
+    },
+    types: {
+      image: ({ value }) => {
+        if (!value?.asset?._ref) {
+          return null;
+        }
+        return (
+          <figure className="my-8">
+            <Image
+              {...urlForImage(value)}
+              alt={value.alt || "Blog image"}
+              width={800}
+              height={600}
+              className="rounded-lg"
+            />
+            {value.caption && (
+              <figcaption className="mt-2 text-center text-sm italic text-gray-600 dark:text-gray-400">
+                {value.caption}
+              </figcaption>
+            )}
+          </figure>
+        );
+      },
+      video: ({ value }) => {
+        if (!value?.url) {
+          return null;
+        }
+
+        // Check if it's a YouTube or Vimeo URL
+        const isYouTube =
+          value.url.includes("youtube.com") ||
+          value.url.includes("youtu.be");
+        const isVimeo = value.url.includes("vimeo.com");
+
+        let embedUrl = value.url;
+
+        if (isYouTube) {
+          const videoId = value.url.match(
+            /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
+          )?.[1];
+          embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        } else if (isVimeo) {
+          const videoId = value.url.match(/vimeo\.com\/(\d+)/)?.[1];
+          embedUrl = `https://player.vimeo.com/video/${videoId}`;
+        }
+
+        return (
+          <figure className="my-8">
+            <div className="relative aspect-video overflow-hidden rounded-lg">
+              <iframe
+                src={embedUrl}
+                className="absolute inset-0 h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            {value.caption && (
+              <figcaption className="mt-2 text-center text-sm italic text-gray-600 dark:text-gray-400">
+                {value.caption}
+              </figcaption>
+            )}
+          </figure>
+        );
+      },
+      codeBlock: ({ value }) => {
+        if (!value?.code) {
+          return null;
+        }
+        return (
+          <div className="my-6">
+            {value.filename && (
+              <div className="rounded-t-lg bg-gray-800 px-4 py-2 text-sm text-gray-300">
+                {value.filename}
+              </div>
+            )}
+            <pre
+              className={`${value.filename ? "rounded-t-none" : ""} overflow-x-auto rounded-lg bg-gray-900 p-4`}>
+              <code
+                className={`language-${value.language || "text"} text-sm text-gray-100`}>
+                {value.code}
+              </code>
+            </pre>
+          </div>
+        );
+      }
+    }
+  };
+
+  return <PortableText value={value} components={components} />;
 }
 
 const MainImage = ({ image }) => {

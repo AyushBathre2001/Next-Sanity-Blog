@@ -1,3 +1,4 @@
+import NewsletterForm from "@/components/blog/NewsletterForm";
 import Container from "@/components/container";
 import PostList from "@/components/postlist";
 
@@ -5,7 +6,7 @@ export default function Post({ posts }) {
   return (
     <>
       {posts && (
-        <Container>
+        <Container className="min-h-screen">
           <div className="grid gap-10 md:grid-cols-2 lg:gap-10 ">
             {posts.slice(0, 2).map(post => (
               <PostList
@@ -23,6 +24,9 @@ export default function Post({ posts }) {
           </div>
         </Container>
       )}
+      <div className="mx-auto max-w-xl md:py-14 py-10 px-4">
+        <NewsletterForm />
+      </div>
     </>
   );
 }
