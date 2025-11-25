@@ -39,7 +39,7 @@ export default function TableOfContents({ headings }) {
 
   return (
     <div className="sticky top-8 max-h-[calc(100vh-6rem)] overflow-y-auto">
-      <div className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+      <div className="font-bebas_neue mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
         Table of Contents
       </div>
       <nav className="space-y-2 border-l-2 border-gray-200 dark:border-gray-700">

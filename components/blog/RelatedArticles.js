@@ -4,7 +4,9 @@ import PostList from "../postlist";
 const RelatedArticles = ({ posts }) => {
   return (
     <div className="flex w-full flex-col items-center justify-center gap-6">
-      <h3 className="text-[24px] font-semibold">Related Articles</h3>
+      <h3 className="font-bebas_neue text-[24px] font-normal tracking-wide">
+        Related Articles
+      </h3>
       <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
         {posts?.map(post => (
           <PostList

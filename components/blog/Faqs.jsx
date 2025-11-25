@@ -11,7 +11,7 @@ const Faqs = ({ faqs }) => {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 lg:px-8">
       <div className="mb-12 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 md:text-3xl ">
+        <h2 className="text-2xl font-bebas_neue font-normal tracking-wide text-gray-900 md:text-3xl ">
           Frequently Asked Questions
         </h2>
         <p className="mt-4 text-lg text-gray-600">

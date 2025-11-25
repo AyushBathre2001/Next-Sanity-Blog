@@ -12,6 +12,7 @@ import TableOfContents from "@/components/blog/tableOfContents";
 import Faqs from "@/components/blog/Faqs";
 import RelatedArticles from "@/components/blog/RelatedArticles";
 import NewsletterForm from "@/components/blog/NewsletterForm";
+import SteelMasterForm from "@/components/form/SteelMasterForm";
 
 export default function Post(props) {
   const { loading, post } = props;
@@ -70,7 +71,7 @@ export default function Post(props) {
           <div className="flex justify-center">
             <CategoryLabel categories={post.categories} />
           </div>
-          <h1 className="text-brand-primary mb-3 mt-2 text-center text-3xl font-semibold tracking-tight dark:text-white lg:text-4xl lg:leading-snug">
+          <h1 className="font-bebas_neue mb-3 mt-2 text-center text-3xl font-normal leading-tight tracking-wide dark:text-white lg:text-4xl lg:leading-snug">
             {post.title}
           </h1>
 
@@ -123,10 +124,10 @@ export default function Post(props) {
 
       <Container className="max-w-screen-xl">
         <div className="mx-auto max-w-screen-2xl">
-          <div className="flex w-full gap-8">
+          <div className="flex w-full flex-col gap-8 lg:flex-row">
             {/* Table of Contents - Left Sidebar */}
             {headings.length > 0 && (
-              <aside className="hidden w-60 flex-shrink-0 lg:block">
+              <aside className="w-full flex-shrink-0 lg:block lg:w-60">
                 <TableOfContents headings={headings} />
               </aside>
             )}
@@ -144,12 +145,12 @@ export default function Post(props) {
               {post.author && <AuthorCard author={post.author} />}
             </article>
 
-            <aside className="hidden w-[350px] flex-shrink-0 lg:block">
-              <NewsletterForm />
+            <aside className="sticky top-6 h-full w-full flex-shrink-0 lg:block lg:w-[350px]">
+              <SteelMasterForm />
             </aside>
           </div>
         </div>
-        <div className="w-full md:py-14 py-10">
+        <div className="w-full py-10 md:py-14">
           <RelatedArticles posts={post?.relatedArticles} />
         </div>
       </Container>

@@ -14,10 +14,8 @@ module.exports = {
         gray: colors.neutral
       },
       fontFamily: {
-        // to change, update font in _document.js
-        sans: ["var(--font-inter)", ...defaultTheme.fontFamily.sans],
-        serif: ["var(--font-lora)", ...defaultTheme.fontFamily.serif],
-        stock: [defaultTheme.fontFamily.sans]
+        roboto: "var(--roboto-font)",
+        bebas_neue: "var(--bebas-neue-font)"
       },
       aspectRatio: {
         "4/3": "4 / 3",

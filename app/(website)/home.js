@@ -1,5 +1,6 @@
 import NewsletterForm from "@/components/blog/NewsletterForm";
 import Container from "@/components/container";
+import SteelMasterForm from "@/components/form/SteelMasterForm";
 import PostList from "@/components/postlist";
 
 export default function Post({ posts }) {
@@ -24,8 +25,8 @@ export default function Post({ posts }) {
           </div>
         </Container>
       )}
-      <div className="mx-auto max-w-xl md:py-14 py-10 px-4">
-        <NewsletterForm />
+      <div className="mx-auto max-w-xl px-4 py-10 md:py-14">
+        <SteelMasterForm />
       </div>
     </>
   );

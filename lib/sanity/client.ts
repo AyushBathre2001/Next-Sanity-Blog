@@ -177,6 +177,26 @@ export async function subscribedUser(data: any) {
   return [];
 }
 
+export async function createQuoteRequest(data: any) {
+  if (client) {
+    return (
+      (await client.create({
+        _type: "quoteRequest",
+        product: data?.product,
+        fullName: data?.full_name,
+        email: data?.email,
+        phone: data?.phone,
+        location: data?.location,
+        deliveryDate: data?.delivery_date,
+        status: "new",
+        submittedAt: new Date().toISOString(),
+        notes: ""
+      })) || []
+    );
+  }
+  return [];
+}
+
 export async function getSearchResults(searchTerm: string) {
   if (client) {
     return (await client.fetch(searchquery, { searchTerm })) || [];

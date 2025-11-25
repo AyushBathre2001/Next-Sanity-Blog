@@ -38,7 +38,7 @@ export default function Navbar({ logo }) {
             <>
               <div className="flex flex-wrap justify-between md:flex-nowrap md:gap-10">
                 <div className="flex w-full items-center justify-between md:w-auto">
-                  <Link href="/" className="w-28">
+                  <Link href="/" className="">
                     <Image
                       src={logoSrc}
                       alt="Logo"
