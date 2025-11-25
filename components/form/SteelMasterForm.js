@@ -19,15 +19,19 @@ const SteelMasterForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const products = [
-    "Galvanized Coated Coils",
-    "Flat Carbon Steel",
-    "Coated Coils: Aluzinc & Galvalume Coils",
-    "Coated Coils: Pre-Painted Coils",
-    "Aluminum Coils and Sheets",
-    "Long Carbon Steel",
-    "Section Beams",
-    "Section Channels",
-    "Prime Surplus Coils & Secondary Coils"
+    "Structural Floor Decking 2WH-36 (54/305)",
+    "Structural Floor Decking 3WH-36 (76/305)",
+    "Z Purlin",
+    "C Purlin",
+    "Cladding Profiles",
+    "Storage Shed",
+    "Garden Sheds",
+    "Villa Sheds",
+    "Utility Cabins",
+    "Fencing",
+    "Other Accessories",
+    "Edge Trim and Flashing",
+    "Gutter"
   ];
 
   const handleChange = e => {
@@ -145,7 +149,7 @@ const SteelMasterForm = () => {
   return (
     <div className="mx-auto w-full rounded-lg border border-gray-200 p-6 shadow-sm">
       <div className="mb-6 text-center">
-        <h2 className="font-bebas_neue mb-2 text-2xl font-normal tracking-wide">
+        <h2 className="mb-2 font-bebas_neue text-2xl font-normal tracking-wide">
           Get a Custom Quote
         </h2>
       </div>

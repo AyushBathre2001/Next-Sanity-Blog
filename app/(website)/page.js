@@ -1,6 +1,6 @@
-import { getAllBlogs } from "@/services/blog/api";
 import HomePage from "./home";
 import { getSEObyPageType } from "@/services/seo/api";
+import { getAllPosts } from "@/lib/sanity/client";
 
 export async function generateMetadata() {
   const seoData = await getSEObyPageType("home");
@@ -28,7 +28,7 @@ export async function generateMetadata() {
 }
 
 export default async function IndexPage() {
-  const posts = await getAllBlogs();
+  const posts = await getAllPosts();
 
   return <HomePage posts={posts} />;
 }
