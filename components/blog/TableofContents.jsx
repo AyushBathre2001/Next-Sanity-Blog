@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function TableOfContents({ headings }) {
+const TableOfContents = ({ headings }) => {
   const [activeId, setActiveId] = useState("");
 
   useEffect(() => {
@@ -64,4 +64,6 @@ export default function TableOfContents({ headings }) {
       </nav>
     </div>
   );
-}
+};
+
+export default TableOfContents;
