@@ -185,3 +185,6 @@ const DropdownMenu = ({ menu, items, mobile }) => {
     </Menu>
   );
 };
+
+export const revalidate = 0;
+

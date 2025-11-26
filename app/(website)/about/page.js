@@ -32,4 +32,4 @@ export default async function AboutPage() {
   return <About about={aboutPage} />;
 }
 
-// export const revalidate = 60;
+export const revalidate = 0;
