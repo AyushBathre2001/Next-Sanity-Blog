@@ -32,3 +32,6 @@ export default async function IndexPage() {
 
   return <HomePage posts={posts} />;
 }
+
+export const revalidate = 0;
+
